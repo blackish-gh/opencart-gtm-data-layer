@@ -1,0 +1,93 @@
+﻿To track the add to cart action:
+
+Open the catalog/controller/checkout/cart.php file and search for "if (!$json) {" string in "public function add() {" function, then add this code after the founded string:
+
+$json['name'] = $product_info['name'];
+
+Open the catalog/view/javascript/common.js file (might be another path if the theme is not default) and search for "if (json['success']) {" string in "var cart = {", then add the code below after the founded condition:
+			
+// Measure adding a product to a shopping cart by using an 'add' actionFieldObject 			
+// and a list of productFieldObjects. 			
+dataLayer.push({    
+	'event': 'addToCart',   
+		'ecommerce': {     
+			'currencyCode': 'UAH',     
+			'add': {                               // 'add' actionFieldObject measures.       
+			'products': [{                        //  adding a product to a shopping cart.         
+			'name': '' + json['name'] + '',          
+			'id': '' + product_id + ''      
+			}]      
+		}    
+	} 
+});
+
+To track the remove from cart action:
+
+Open the catalog/controller/checkout/cart.php file and search "public function remove() {" function, then find the "if (isset($this->request->post['key'])) {" string and paste this code after the string:
+
+$product_info = $this->model_catalog_product->getProduct($this->request->post['key']);
+$json['name'] = $product_info['name'];
+
+Open the catalog/view/javascript/common.js file (might be another path if the theme is not default) and search for "success: function(json) {" string in "'remove': function(key) {" function, then add the code below after the string:
+
+// Measure the removal of a product from a shopping cart. 
+dataLayer.push({   
+	'event': 'removeFromCart',   
+	'ecommerce': {      
+	'remove': {                              // 'remove' actionFieldObject measures.       
+		'products': [{                         //  removing a product to a shopping cart.           
+			'name': '' + json['name'] + '',           
+			'id': '' + key + ''                         
+	}]      
+      }   
+   } 
+});
+
+That's all.
+
+Чтобы отследить добавление в корзину:
+
+Откройте файл catalog/controller/checkout/cart.php и ищите строчку "if (!$json) {" в функции "public function add() {" , потом добавьте этот код после найденной строчки:
+
+$json['name'] = $product_info['name'];
+
+Откройте файл catalog/view/javascript/common.js (возможно, будет в другом месте, если шаблон не стандартный) и ищите строчку "if (json['success']) {" в функции "var cart = {", потом добавьте этот код после найденного условия:
+			
+// Measure adding a product to a shopping cart by using an 'add' actionFieldObject 			
+// and a list of productFieldObjects. 			
+dataLayer.push({    
+	'event': 'addToCart',   
+		'ecommerce': {     
+			'currencyCode': 'UAH',     
+			'add': {                               // 'add' actionFieldObject measures.       
+			'products': [{                        //  adding a product to a shopping cart.         
+			'name': '' + json['name'] + '',          
+			'id': '' + product_id + ''      
+			}]      
+		}    
+	} 
+});
+
+Чтобы отследить удаление из корзины:
+
+Откройте файл catalog/controller/checkout/cart.php и ищите функцию "public function remove() {" , потом строчку "if (isset($this->request->post['key'])) {" и вставьте данный код после этой строчки:
+
+$product_info = $this->model_catalog_product->getProduct($this->request->post['key']);
+$json['name'] = $product_info['name'];
+
+Откройте файл catalog/view/javascript/common.js (возможно, будет в другом месте, если шаблон не стандартный) и ищите строчку "success: function(json) {" в функции "'remove': function(key) {" , потом вставьте данный код после этой строчки:
+
+// Measure the removal of a product from a shopping cart. 
+dataLayer.push({   
+	'event': 'removeFromCart',   
+	'ecommerce': {      
+	'remove': {                              // 'remove' actionFieldObject measures.       
+		'products': [{                         //  removing a product to a shopping cart.           
+			'name': '' + json['name'] + '',           
+			'id': '' + key + ''                         
+	}]      
+      }   
+   } 
+});
+
+Это всё.

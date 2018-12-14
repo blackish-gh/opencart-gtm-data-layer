@@ -1,0 +1,55 @@
+To track the click on product place this code before the loop <?php foreach ($products as $product) { ?> ends in category.tpl :
+  	<script> /**  
+		* Call this function when a user clicks on a product link. This function uses the event  
+		* callback datalayer variable to handle navigation after the ecommerce data has been sent  
+		* to Google Analytics.  * @param {Object} productObj An object representing a product.  
+		*/ 
+		function productObj<?php echo $product['product_id']; ?>() {   
+		dataLayer.push({      
+		'event': 'productClick',   
+		'ecommerce': {        
+		'click': {         
+		'actionField': {'list': 'Home products'},       // Optional list property.         
+		'products':  [{            
+		'name': '<?php echo str_replace("'",'"',$product['name']); ?>',                      // Name or ID is required.           
+		'id': <?php echo $product['product_id']; ?>,           
+		'price': <?php echo preg_replace("/[^0-9]/", '', $product['price']); ?>                              
+		}]        
+		}      
+		},       
+		'eventCallback': function() {        
+		document.location = '<?php echo $product['href']; ?>';    
+		}    
+		}); 
+		}
+		</script>
+
+Then assign the <a> tag with onclick="productObj<?php echo $product['product_id']; ?>();"
+
+Чтобы отслеживать клик по товару добавьте этот код перед концом цикла <?php foreach ($products as $product) { ?> в category.tpl :
+  	<script> /**  
+		* Call this function when a user clicks on a product link. This function uses the event  
+		* callback datalayer variable to handle navigation after the ecommerce data has been sent  
+		* to Google Analytics.  * @param {Object} productObj An object representing a product.  
+		*/ 
+		function productObj<?php echo $product['product_id']; ?>() {   
+		dataLayer.push({      
+		'event': 'productClick',   
+		'ecommerce': {        
+		'click': {         
+		'actionField': {'list': 'Home products'},       // Optional list property.         
+		'products':  [{            
+		'name': '<?php echo str_replace("'",'"',$product['name']); ?>',                      // Name or ID is required.           
+		'id': <?php echo $product['product_id']; ?>,           
+		'price': <?php echo preg_replace("/[^0-9]/", '', $product['price']); ?>                              
+		}]        
+		}      
+		},       
+		'eventCallback': function() {        
+		document.location = '<?php echo $product['href']; ?>';    
+		}    
+		}); 
+		}
+		</script>
+
+Потом примените к тегу <a> параметр onclick="productObj<?php echo $product['product_id']; ?>();"
